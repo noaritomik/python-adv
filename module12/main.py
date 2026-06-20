@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
 
 
-# =========================
-# Abstract Base Class
-# =========================
+# =====================================
+# Abstract Base Class: Person
+# =====================================
 class Person(ABC):
+
     def __init__(self, name, age, weight, height):
         self.name = name
         self.age = age
         self.weight = weight
         self.height = height
 
-    # Encapsulation using properties
+    # Encapsulation
     @property
     def weight(self):
         return self.__weight
@@ -45,9 +46,9 @@ class Person(ABC):
         pass
 
 
-# =========================
+# =====================================
 # Adult Class
-# =========================
+# =====================================
 class Adult(Person):
 
     def calculate_bmi(self):
@@ -58,26 +59,26 @@ class Adult(Person):
 
         if bmi < 18.5:
             return "Underweight"
-        elif bmi < 24.9:
+        elif bmi < 25:
             return "Normal Weight"
-        elif bmi < 29.9:
+        elif bmi < 30:
             return "Overweight"
         else:
             return "Obese"
 
     def print_info(self):
-        print("\n----- Adult Information -----")
-        print(f"Name     : {self.name}")
-        print(f"Age      : {self.age}")
-        print(f"Weight   : {self.weight} kg")
-        print(f"Height   : {self.height} m")
-        print(f"BMI      : {self.calculate_bmi():.2f}")
-        print(f"Category : {self.get_bmi_category()}")
+        print("\n===== Adult Information =====")
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")
+        print(f"Weight: {self.weight} kg")
+        print(f"Height: {self.height} m")
+        print(f"BMI: {self.calculate_bmi():.2f}")
+        print(f"Category: {self.get_bmi_category()}")
 
 
-# =========================
+# =====================================
 # Child Class
-# =========================
+# =====================================
 class Child(Person):
 
     ADJUSTMENT_FACTOR = 0.95
@@ -99,18 +100,18 @@ class Child(Person):
             return "Obese"
 
     def print_info(self):
-        print("\n----- Child Information -----")
-        print(f"Name         : {self.name}")
-        print(f"Age          : {self.age}")
-        print(f"Weight       : {self.weight} kg")
-        print(f"Height       : {self.height} m")
-        print(f"Adjusted BMI : {self.calculate_bmi():.2f}")
-        print(f"Category     : {self.get_bmi_category()}")
+        print("\n===== Child Information =====")
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")
+        print(f"Weight: {self.weight} kg")
+        print(f"Height: {self.height} m")
+        print(f"Adjusted BMI: {self.calculate_bmi():.2f}")
+        print(f"Category: {self.get_bmi_category()}")
 
 
-# =========================
+# =====================================
 # BMI Application Class
-# =========================
+# =====================================
 class BMIApp:
 
     def __init__(self):
@@ -120,38 +121,31 @@ class BMIApp:
         self.people.append(person)
 
     def collect_user_data(self):
+
         while True:
-
-            print("\n1. Adult")
-            print("2. Child")
-
-            choice = input("Enter choice (1/2): ")
-
             try:
+                print("\n===== BMI SYSTEM =====")
+
                 name = input("Enter name: ")
                 age = int(input("Enter age: "))
                 weight = float(input("Enter weight (kg): "))
                 height = float(input("Enter height (m): "))
 
-                if choice == "1":
+                # Automatically decide Adult or Child
+                if age >= 18:
                     person = Adult(name, age, weight, height)
-
-                elif choice == "2":
-                    person = Child(name, age, weight, height)
-
                 else:
-                    print("Invalid choice!")
-                    continue
+                    person = Child(name, age, weight, height)
 
                 self.add_person(person)
 
+                again = input("\nAdd another person? (y/n): ").lower()
+
+                if again != "y":
+                    break
+
             except ValueError as e:
                 print("Error:", e)
-
-            again = input("\nAdd another person? (y/n): ").lower()
-
-            if again != "y":
-                break
 
     def display_all_people(self):
 
@@ -165,14 +159,12 @@ class BMIApp:
             person.print_info()
 
 
-# =========================
-# Main Program
-# =========================
+# =====================================
+# Main Function
+# =====================================
 def main():
     app = BMIApp()
-
     app.collect_user_data()
-
     app.display_all_people()
 
 
